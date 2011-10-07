@@ -1,3 +1,5 @@
+virtualeyes studio
+
 Introduction
 ------------
 virtualeyes is a utility for visualizing, analyzing and manipulating the various components of virtual machine(s), process(es), and abstract systems.  
