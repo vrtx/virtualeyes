@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="scroll_arrow_vert_tan.png">iconic/tan/move_vertical_9x24.png</file>
+        <file alias="scroll_arrow_vert_grey.png">iconic/gray_dark/move_vertical_9x24.png</file>
+        <file>iconic/black/cog_alt_32x32.png</file>
+        <file>iconic/blue/fork_28x32.png</file>
+        <file>iconic/blue/cog_alt_32x32.png</file>
+        <file>iconic/green/arrow_down_12x12.png</file>
+    </qresource>
+    <qresource prefix="/timeline">
+        <file>iconic/green/first_8x8.png</file>
+        <file>iconic/tan/clock_16x16.png</file>
+        <file>iconic/gray_light/clock_16x16.png</file>
+        <file>iconic/gray_light/clock_12x12.png</file>
+    </qresource>
+</RCC>
