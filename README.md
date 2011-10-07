@@ -1,7 +1,7 @@
-virtualeyes studio
+**virtualeyes studio**
 
 Introduction
-------------
+============
 virtualeyes is a utility for visualizing, analyzing and manipulating the various components of virtual machine(s), process(es), and abstract systems.  
 
 The first iteration supports data collection via DTrace and GDB.  This allows virtualeyes to collect and manipulate memory, function calls, CPU state(s) and execution state(s) in addition to collecting type, structure and symbol data from debug data and heuristics.  
