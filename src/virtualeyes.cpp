@@ -24,9 +24,6 @@ using namespace veyes;
 // singleton instance
 virtualeyes *virtualeyes::instance = NULL;
 
-// enum translations
-enum_convert <member_type_t> a_mtt;
-
 virtualeyes::virtualeyes() :
     handle_base()
 {
