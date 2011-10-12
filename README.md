@@ -1,18 +1,12 @@
 virtualeyes
 -----------
-virtualeyes is a utility for visualizing, analyzing and manipulating the various components of virtual machine(s), process(es), and abstract systems.  
+virtualeyes is a utility for visualizing, analyzing and manipulating the various components of virtual machine(s), process(es), and abstract systems.  The first iteration supports data collection via DTrace and GDB.  This allows virtualeyes to collect and manipulate memory, function calls, CPU state(s) and execution state(s).  In addition, debugger symbols and heuristics are used to discover types, structures and symbols.  Future iterations should support additional host and hypervisor-based data collection modules.
 
-The first iteration supports data collection via DTrace and GDB.  This allows virtualeyes to collect and manipulate memory, function calls, CPU state(s) and execution state(s).  In addition, debugger symbols and heuristics are used to discover types, structures and symbols.
-
-Future iterations should support additional host and hypervisor-based data collection modules.  Of particularly interest is VMWare's execution tracing, recording and replaying facilities.
-
-Goal
-----
-The goal of this project is to provide a simple yet powerful interface for understanding/learning what a system or group of systems is doing.  The utility of this application lies mainly in debugging, reverse engineering, performance analysis and malware analysis.  Data can be collected from processes, kernels, hypervisors or just about any event logger and visualized in real-time.  Execution states can also be altered in real-time (depending on the system(s) being monitored).
+The utility of this application lies mainly in debugging, reverse engineering, performance analysis, malware analysis and general system analysis.  Data can be collected from processes, kernels, hypervisors or just about any event logger and visualized with interactions in real-time.  Of particularly interest is VMWare's execution tracing, recording and replaying facilities.
 
 Status
 ------
-This project is just getting off the ground, but the core infrastructure is relatively complete.  Looking for other engineers/developers/analysts/hackers to invest their ideas, time and code.  
+This project is just getting off the ground, but the core infrastructure is relatively complete.  Looking for other engineers/developers/analysts/hackers to invest their ideas, time and code.
 
 virtualeyes is written in C++ and aims to be cross-platform by utilizing libraries like Qt, OpenGL, DTrace (POSIX), GDB/MI (POSIX and Hypervisors), and eventually WinDBG/KDB/DIA (Windows).  Most development and testing is focused on x86 and x86\_64 POSIX hosts and guests.  
 
@@ -30,9 +24,9 @@ Build instructions
 ------------------
 This project uses the CMake build system.  To configure and build virtualeyes:
 
-$ cd virtualeyes/build
-$ cmake ../
-$ make
+        $ cd virtualeyes/build
+        $ cmake ../
+        $ make
 
 The resulting binary will be in virtualeyes/build/src.
 
@@ -63,21 +57,20 @@ Coding Idioms
 
 Coding Conventions
 ------------------
-CamelCase is only used for Qt function overrides
-Keep names short, but never sacrifice meaning
-All functions and classes should be lower case
-All class/function/variable names should use '\_' to seperate words
-Member variables prefixed with 'm\_'
-Static variables prefixed with 's\_'
-Use literate-style comments
-Consistency is king!
+ - CamelCase is only used for Qt function overrides
+ - Keep names short, but never sacrifice meaning
+ - All functions and classes should be lower case
+ - All class/function/variable names should use '\_' to seperate words
+ - Member variables prefixed with 'm\_'
+ - Use literate-style comments
+ - Consistency is king!
 
 Styling Guide
 -------------
-All GUI widgets should be styled through the style\_mgr class
-Styles can be updated and defined by editing the text in style\_mgr.cpp's constructor
-Use Qt's CSS when possible, otherwise implement a function to style a widget type in style\_mgr
-There's lots of room for improvement with the styling system; input is welcome
+ - All GUI widgets should be styled through the style\_mgr class
+ - Styles can be updated and defined by editing the text in style\_mgr.cpp's constructor
+ - Use Qt's CSS when possible, otherwise implement a function to style a widget type in style\_mgr
+ - There's lots of room for improvement with the styling system; input is welcome
 
 Qemu instructions
 -----------------
