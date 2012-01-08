@@ -1,6 +1,6 @@
 virtualeyes
 -----------
-virtualeyes is a utility for visualizing, analyzing and manipulating the various components of virtual machine(s), process(es), and abstract systems.  The first iteration supports data collection via DTrace and GDB.  This allows virtualeyes to collect and manipulate memory, function calls, CPU state(s) and execution state(s).  In addition, debugger symbols and heuristics are used to discover types, structures and symbols.  Future iterations should support additional host and hypervisor-based data collection modules.
+virtualeyes is a utility for visualizing, analyzing and manipulating the various components of virtual machine(s), process(es), and abstract systems.  The first iteration supports data collection via vwatchd's DTrace and GDB modules.  This allows virtualeyes to collect and manipulate memory, function calls, CPU state(s) and execution state(s).  In addition, debugger symbols and heuristics are used to discover types, structures and symbols.  Future iterations should support additional host and hypervisor-based data collection modules.
 
 The utility of this application lies mainly in debugging, reverse engineering, performance analysis, malware analysis and general system analysis.  Data can be collected from processes, kernels, hypervisors or just about any event logger and visualized with interactions in real-time.  Of particularly interest is VMWare's execution tracing, recording and replaying facilities.
 
@@ -8,7 +8,7 @@ Status
 ------
 This project is just getting off the ground, but the core infrastructure is relatively complete.  Looking for other engineers/developers/analysts/hackers to invest their ideas, time and code.
 
-virtualeyes is written in C++ and aims to be cross-platform by utilizing libraries like Qt, OpenGL, DTrace (POSIX), GDB/MI (POSIX and Hypervisors), and eventually WinDBG/KDB/DIA (Windows).  Most development and testing is focused on x86 and x86\_64 POSIX hosts and guests.  
+virtualeyes is written in C++ and aims to be cross-platform by utilizing libraries like Qt, OpenGL, MongoDB, DTrace (POSIX), and eventually WinDBG/KDB/DIA (Windows).  Most development and testing is focused on x86 and x86\_64 POSIX hosts and guests.  
 
 Screen Shots
 ------------
@@ -16,9 +16,10 @@ Main workspace: http://vrtx0.com/images/veyes-09.26.11.png (still under heavy de
 
 Build Dependancies
 ------------------
+  - cmake (2.6+)
   - Qt Framework (4.5+)
   - Boost Libraries (1.4.1+)
-  - libmigdb (0.8.12+)  (soon to be deprecated due to incomplete implementations)
+  - libmongoclient (2.0+)
 
 Build instructions
 ------------------
@@ -35,9 +36,8 @@ Coding Idioms
  - Classes should inherit handle\_base, then use 'handle&lt;&gt;' or 'soft\_handle&lt;&gt;' template accessors for thread safety and automatic destruction.  Example:
          handle &lt;snapshot&gt; l\_snap = new snapshot();
  - Native and Derived Qt objects should use Qt's parenting system for memory allocation instead of deriving handle\_base.  Mixing the two is supported, but should be avoided for simplicity.
- - Add enums to the enum\_convert class if you would like fast, automated type conversions (e.g. enum to string).
- - Singleton-style classes should be avoided.  Use the 'global&lt;&gt;' construct outlined in src/core/global.hpp.
-
+ - Add enums to the enum\_convert class if you would like fast, automated type conversions (e.g. enum to string).  NOTE: this class is somewhat bastardized until type-safe enums are supported in the osx clang c++0x compiler.
+ - Singleton-style classes should be avoided.  Use the 'global&lt;&gt;' construct outlined in src/core/global.hpp when neccesary.
  - Objects that form a hierarchy should use a 'handle&lt;&gt;' or 'container &lt;handle &lt;&gt; &gt;' member variable to create the parent -&gt; child link and take ownership.  Example:  
 
          typedef set <handle <snapshot> > owned_snapshots_t;  
@@ -71,12 +71,6 @@ Styling Guide
  - Styles can be updated and defined by editing the text in style\_mgr.cpp's constructor
  - Use Qt's CSS when possible, otherwise implement a function to style a widget type in style\_mgr
  - There's lots of room for improvement with the styling system; input is welcome
-
-Qemu instructions
------------------
-A simple test setup for virtual machine analysis can be achieved by starting up the qemu process 
-with the '-S -s' flags, which will start a gdb server using the built-in qemu stub:
-qemu-system-x86\_64 -hda win2k8\_r2\_sp1.qcow2 -cdrom win2k8\_r2\_dvd.iso -m 2048 -cpu core2duo -s -S
 
 TODO
 ----
