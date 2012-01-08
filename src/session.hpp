@@ -19,10 +19,11 @@
 #include "breakpoint.hpp"
 #include "handle_base.hpp"
 #include "vm_run.hpp"
+#include "core/db/db.hpp"
 
 namespace veyes
 {
-        typedef string vm_config;               // BB TODO:  temp until config classes are implemented
+        typedef string target_config;               // BB TODO:  temp until config classes are implemented
 
         ///////////////////////////////////////////////////////
         /// @class   session
@@ -43,7 +44,9 @@ namespace veyes
 	        session();                                      // ctor
 	        session(const session &a_session);              // copy ctor
 	        virtual ~session();                             // dtor
-	        int attach(const vm_config &a_vm_config);       // connect to the VM debug interface
+	        int attach(const target_config &a_target_config);       // attach to a system and/or process
+			soft_handle<db> get_db();						// get (or create+get) a connection to the db
+			void set_db_conf(const db_config_t &a_conf);	// set the db connection info
 
         public slots:
             void add_snapshot(const veyes::handle <snapshot> &a_snapshot);         // register a new collection snapshot with the session
@@ -57,7 +60,8 @@ namespace veyes
             void vm_run_added(const veyes::handle <vm_run> &a_vm_run);             // notify that a vm_run was added
 
         private:
-
+			db_config_t db_conf;
+			handle<db> active_db;
         };
 
 }

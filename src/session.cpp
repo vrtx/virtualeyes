@@ -51,9 +51,9 @@ session::~session()
         m_vm_runs.clear();
 }
 
-// @brief      Attach to the VM debugger
-// @param[in]  vm_config  Configuration data for the VM debugging session
-int session::attach(const vm_config &a_config)
+// @brief      Attach to a system and/or process
+// @param[in]  target_config  Configuration data for the monitoring/debugging session
+int session::attach(const target_config &a_config)
 {
 	// TEMP: Testing
     breakpoint *b = new breakpoint;
@@ -62,6 +62,27 @@ int session::attach(const vm_config &a_config)
 
     return 0;
 }
+
+/// @brief		Set the db configuration params
+void session::set_db_conf(const db_config_t &a_conf)
+{
+	db_conf = a_conf;
+}	
+
+// @brief      Get the active DB connection
+soft_handle<db> session::get_db()
+{
+	if (active_db.is_valid())
+		// connection exists
+		return active_db;
+
+	// connect
+	active_db = new db;
+	active_db->set_config(db_conf);
+	active_db->connect();
+	return active_db;
+}
+
 
 // @brief      Add a new snapshot to the session
 // @param[in]  a_snapshot   The snapshot object to add to the session

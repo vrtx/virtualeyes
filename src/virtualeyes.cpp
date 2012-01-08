@@ -13,6 +13,7 @@
 #include "main_view.hpp"
 #include "main_window.hpp"
 #include "common.hpp"
+#include "core/db/realtime_feed.hpp"
 #include "session.hpp"
 #include "widgets/style_mgr.hpp"
 #include "core/enum_convert.hpp"
@@ -21,7 +22,6 @@
 #include <util/goodies.h>
 
 using namespace veyes;
-using namespace mongo;
 
 // Static Initializations
 
@@ -59,6 +59,15 @@ void virtualeyes::initialize()
 
     // initialize the interpreter
     m_script_engine = handle <vscript>(new vscript);
+
+	// start listening for real-time feeds
+	db_config_t db_config;
+	db_config.hostname="localhost";
+	db_config.port=27017;
+	db_config.read_only=true;
+	m_active_session->set_db_conf(db_config);
+	realtime_feed *test_feed = new realtime_feed(m_active_session->get_db(), "test.realtime_feed", 5);
+	test_feed->start();
 }
 
 void virtualeyes::finalize(int a_retval)
