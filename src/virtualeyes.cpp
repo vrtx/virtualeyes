@@ -17,7 +17,11 @@
 #include "widgets/style_mgr.hpp"
 #include "core/enum_convert.hpp"
 
+#include <client/dbclient.h>
+#include <util/goodies.h>
+
 using namespace veyes;
+using namespace mongo;
 
 // Static Initializations
 
@@ -79,5 +83,42 @@ virtualeyes::~virtualeyes()
 void virtualeyes::new_session()
 {
     emit update_active_session();
+
+	test_feed.start();
 }
 
+
+
+void virtualeyes::realtime_feed::t_feed()
+{
+    
+	DBClientConnection conn;
+	const char *ns = "realtime_feed";
+    string errmsg;
+
+    if (!conn.connect(string( "127.0.0.1:27017") , errmsg )) {
+        cout << "couldn't connect : " << errmsg << endl;
+        throw -11;
+    }
+	
+    BSONElement lastId = minKey.firstElement();
+    Query query = Query();
+
+    auto_ptr<DBClientCursor> c =
+        conn.query(ns, query, 0, 0, 0, QueryOption_CursorTailable);
+
+    while( 1 ) {
+        if( !c->more() ) {
+            if( c->isDead() ) {
+                break;    // we need to requery
+            }
+
+            // all data (so far) exhausted, wait for more
+            sleepsecs(1);
+            continue;
+        }
+        BSONObj o = c->next();
+        lastId = o["_id"];
+        cout << o.toString() << endl;
+    }
+}

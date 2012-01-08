@@ -24,7 +24,7 @@ namespace veyes {
 // struct defining a struct's member data
 typedef struct {
     QString name;                  // member name
-    member_type_t type;            // type of the member
+    int type;            		   // type (member_type_t enum) of the member  TODO: use type-safe enums when c++0x support is added to llvm
     uint16_t deref_depth;          // levels of indirection (e.g. char **a = 2)
     bool deref_is_array;           // is the member a reference to an array?
     bool is_array;                 // is the member an array?

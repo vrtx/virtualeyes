@@ -18,7 +18,6 @@ SET(SRCS
         core/debug.cpp
         core/store.cpp
         core/enum_convert.cpp
-        vm_iface/gdb_iface.cpp
         vm_iface/vm_iface.cpp
         breakpoint.cpp
         veye_scene.cpp
@@ -49,7 +48,6 @@ SET(HDRS
         core/global.hpp
         core/store.hpp
         core/enum_convert.hpp
-        vm_iface/gdb_iface.hpp
         vm_iface/vm_iface.hpp
         models/x86_32.hpp
         opsys/win2k8.hpp
@@ -98,6 +96,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/opsys
                     ${QT_INCLUDES}
                     ${OPENGL_INCLUDE_DIR}
+					${CMAKE_SOURCE_DIR}/../mongo/src/mongo
 )
 
 # platform-specific executable targets
@@ -121,7 +120,12 @@ ENDIF(UNIX)
 TARGET_LINK_LIBRARIES(virtualeyes
                       ${QT_LIBRARIES}
                       ${OPENGL_LIBRARIES}
-                      migdb
+                      # migdb
+					  -L${CMAKE_SOURCE_DIR}/../mongo/
+					  mongoclient
+					  boost_thread-mt
+					  boost_filesystem-mt
+					  boost_system-mt
                       # -L/opt/local/lib/
                       # tcmalloc
                       # profiler

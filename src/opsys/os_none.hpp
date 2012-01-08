@@ -36,7 +36,7 @@ namespace veyes
                 //
                 // Constant Declarations
                 //
-                static const opsys_t os_type = opsys_t::none;
+                static const int os_type = opsys_t::none;
                 static const uint32_t os_version = 0;
                 static const uint32_t os_version_minor = 0;
 

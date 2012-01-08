@@ -83,12 +83,9 @@ void enum_initializer()
     enum_convert <region_type_t>::init();
     enum_convert <opsys_t>::init();
 
-}
-
+} // end enum init
 
 } // namespace
-
-
 
 #undef ENUM_PAIR
 #undef ADD_TRANSLATIONS

@@ -191,11 +191,7 @@ public:
         raw = string(reinterpret_cast <char *>(a_test), sizeof(struct_member_t));
     }
 
-
-
 };
-
-
 
 // Generic Functions
 ////////////////////
@@ -208,12 +204,10 @@ public:
 template <typename _Struct>
 const _Struct *memory_region::cast_to_struct(const uint64_t a_offset) const
 {
-
     // BB TODO:  Add sanity check for region bounds
 
     const _Struct *l_retval = new(raw.data() + a_offset) _Struct;
     return l_retval;
-
 }
 
 /// @brief       Get a copy of this region as <_Struct>
@@ -222,7 +216,6 @@ const _Struct *memory_region::cast_to_struct(const uint64_t a_offset) const
 template <typename _Struct>
 _Struct memory_region::fetch_struct(uint64_t a_offset) const
 {
-
     // BB TODO:  Add sanity check for region bounds
 
     _Struct l_retval;

@@ -17,7 +17,7 @@
 using namespace veyes;
 using namespace std;
 
-output_t debug_log::c_output = output_t::CONSOLE;
+int debug_log::c_output = output_t::CONSOLE;
 
 void debug_log::append_prefix(const QString *a_line, quint16 a_lameness)
 {

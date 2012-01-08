@@ -218,7 +218,7 @@ void veye_scene::reset_gl()
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
         glLoadIdentity();
-        gluPerspective(70, width() / height(), 0.01, 1000);
+        // gluPerspective(70, width() / height(), 0.01, 1000);	// TODO: REPLACE ME
 
         // set up the scene (model matrix)
         glMatrixMode(GL_MODELVIEW);

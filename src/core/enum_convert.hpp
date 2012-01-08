@@ -29,56 +29,59 @@ namespace veyes
 {
 
 // Type Definitions
-typedef uint16_t enum_idx_t;
-typedef boost::bimap <enum_idx_t, QString> enum_map_t;
+typedef int enum_idx_t;
+typedef boost::bimap <int, QString> enum_map_t;
 typedef enum_map_t::value_type enum_pair_t;
 
-
 ////////////////////////////////////
-//
 // Global enum declarations go here:
-//
 ////////////////////////////////////
 
 // type of resource a memory region was acquired from
-enum class region_type_t : enum_idx_t
+struct region_type_t
 {
-    guest_virtual = 0,
-    guest_physical,
-    guest_disk,
-    guest_cpu,
-    host_virtual,
-    host_physical,
-    host_file,
-    host_disk,
-    max_enum = 0xdead
+    enum regions {
+		guest_virtual = 0,
+	    guest_physical = 1,
+	    guest_disk = 2,
+	    guest_cpu = 3,
+	    host_virtual = 4,
+	    host_physical = 5,
+	    host_file = 6,
+	    host_disk = 7,
+	    max_enum = 0xdead
+    };
 };
 
 // enumeration of data types that can be members of a struct
-enum class member_type_t : enum_idx_t
+struct member_type_t
 {
-    e_int = 0,
-    e_uint,
-    e_float,
-    e_ufloat,
-    e_bool,
-    e_char,
-    e_struct,
-    e_union,
-    e_unknown,
-    max_enum = 0xdead
+    enum members {
+		e_int = 0,
+	    e_uint = 1,
+	    e_float = 2,
+	    e_ufloat = 3,
+	    e_bool = 4,
+	    e_char = 5,
+	    e_struct = 6,
+	    e_union = 7,
+	    e_unknown = 8,
+	    max_enum = 0xdead
+	};
 };
 
 // guest operating system type
-enum class opsys_t : enum_idx_t
+struct opsys_t
 {
-    none = 0,
-    bare,
-    linux,
-    bsd,
-    winnt,
-    mach_o,
-    max_enum = 0xdead
+    enum opsys {
+		none = 0,
+	    bare = 1,
+	    linux = 2,
+	    bsd = 3,
+	    winnt = 4,
+	    mach_o = 5,
+	    max_enum = 0xdead
+	};
 };
 
 
@@ -95,10 +98,10 @@ public:
     static void init();
 
     // convert enum to a string
-    static const QString to_string(const _Tp a_enum_idx);
+    static const QString to_string(const int a_enum_idx);
 
     // convert a string to an enum
-    static const _Tp from_string(const QString &a_enum_str);
+    static const int from_string(const QString &a_enum_str);
 
 private:
     // storage for enum <-> string translations
@@ -109,6 +112,7 @@ private:
 // helper function to initialize all enums.
 void enum_initializer();
 
+
 // Template Definitions
 ///////////////////////
 
@@ -116,25 +120,23 @@ void enum_initializer();
 template <typename _Tp>
 void enum_convert <_Tp>::init()
 {
-    //
     // NOTE: init() specializations are defined in enum_convert.cpp using ADD_TRANSLATIONS.
-    //
     VDEBUG(0, "WARNING: attempted to initialize an enum convert without a valid specialization!");
 }
 
 template <typename _Tp>
-const QString enum_convert <_Tp>::to_string(const _Tp a_enum_idx)
+const QString enum_convert <_Tp>::to_string(const int a_enum_idx)
 {
     // lookup and return the value from the left side of the bimap
     try {
-        return enum_map.left.at(static_cast <enum_idx_t>(a_enum_idx));
+        return enum_map.left.at(a_enum_idx);
     } catch (out_of_range e) {
         return "UNKNOWN";
     }
 }
 
 template <typename _Tp>
-const _Tp enum_convert <_Tp>::from_string(const QString &a_enum_str)
+const int enum_convert <_Tp>::from_string(const QString &a_enum_str)
 {
 
     // lookup and return the value from the right side of the bimap

@@ -31,20 +31,22 @@
 
 namespace veyes {
 
-        enum class output_t : uint8_t {
-                STDOUT = 0,
-                CONSOLE = 1,
-                INVALIE = 2
-        };
+    struct output_t  {
+		enum output_type {
+	        STDOUT = 0,
+	        CONSOLE = 1,
+	        INVALIE = 2			
+		};
+    };
 
-        // Debug log helper
-        class debug_log {
-        public:
-                static void append_prefix(const QString *a_line, quint16 a_lameness);
-                static void append_data(QString a_line, quint16 a_lameness);
-                static const QString generate_prefix(const char *a_file, qint32 a_line, const char *a_function);
-                static output_t c_output;
-        };
+    // Debug log helper
+    class debug_log {
+    public:
+        static void append_prefix(const QString *a_line, quint16 a_lameness);
+        static void append_data(QString a_line, quint16 a_lameness);
+        static const QString generate_prefix(const char *a_file, qint32 a_line, const char *a_function);
+        static int c_output; // output type
+    };
 
 }
 

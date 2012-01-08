@@ -10,6 +10,7 @@
 //
 /// @author  Ben Becker
 /// @date    2/13/11
+/// @todo    move to vwatchd  (DEPRICATED UNTIL THEN)
 //
 ///////////////////////////////////////////////////////
 
