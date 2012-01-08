@@ -16,8 +16,14 @@
 #include "common.hpp"
 #include "debug.hpp"
 
-#undef VREF_TRACE
-#define VREF_TRACE(...)  cout << debug_log::generate_prefix(__FILE__, __LINE__, __FUNCTION__).toStdString() << __VA_ARGS__ << endl;
+#ifdef DEBUG_ALLOCATIONS
+#  undef VREF_TRACE
+#  define VREF_TRACE(...)  cout << debug_log::generate_prefix(__FILE__, __LINE__, __FUNCTION__).toStdString() << __VA_ARGS__ << endl;
+#else
+#  undef VREF_TRACE
+#  define VREF_TRACE(...) do {} while (0)
+#endif
+
 
 namespace veyes
 {

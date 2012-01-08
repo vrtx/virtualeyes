@@ -23,6 +23,8 @@
 #include "virtualeyes.hpp"
 #include <QScriptEngine>
 
+#define PI_OVER_360 0.008726646259972
+
 /// @brief    Default ctor
 veye_scene::veye_scene(const QString &name, QWidget *parent) :
     zoom(-40),
@@ -198,32 +200,75 @@ void veye_scene::drawBackground(QPainter *painter, const QRectF &)
 
 }
 
+void build_perspective_matrix(float *m, float fov, float aspect, float znear, float zfar)
+{
+	float ymax = znear * tan(fov * PI_OVER_360);
+	float ymin = -ymax;
+	float xmax = ymax * aspect;
+	float xmin = ymin * aspect;
+
+	float width = xmax - xmin;
+	float height = ymax - ymin;
+
+	float depth = zfar - znear;
+	float q = -(zfar + znear) / depth;
+	// float qn = -2 * (zfar * znear) / depth;
+
+	float w = 2 * znear / width;
+	w = w / aspect;
+	float h = 2 * znear / height;
+
+	m[0]  = w;
+	m[1]  = 0;
+	m[2]  = 0;
+	m[3]  = 0;
+
+	m[4]  = 0;
+	m[5]  = h;
+	m[6]  = 0;
+	m[7]  = 0;
+
+	m[8]  = 0;
+	m[9]  = 0;
+	m[10] = q;
+	m[11] = -1;
+}
+
 /// @brief   Reset the OpenGL view and texture options
 void veye_scene::reset_gl()
 {
 
-        // clear the background
-        glClearColor(bg_red, bg_green, bg_blue, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearDepth(1.0f);
-        glShadeModel(GL_SMOOTH);
+    // clear the background
+    glClearColor(bg_red, bg_green, bg_blue, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearDepth(1.0f);
+    glShadeModel(GL_SMOOTH);
 //        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_MULTISAMPLE);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDepthFunc(GL_LEQUAL);
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthFunc(GL_LEQUAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-        // set up the perspective view
-        glMatrixMode(GL_PROJECTION);
-        glPushMatrix();
-        glLoadIdentity();
-        // gluPerspective(70, width() / height(), 0.01, 1000);	// TODO: REPLACE ME
+    // // set up the perspective view
+    // glMatrixMode(GL_PROJECTION);
+    // glPushMatrix();
+    // glLoadIdentity();
+    // gluPerspective(70, width() / height(), 0.01, 1000);	// TODO: REPLACE ME
 
-        // set up the scene (model matrix)
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
+	float m[16] = {0};
+	float fov=60.0f; // in degrees
+	float aspect=1.3333f;
+	float znear=1.0f;
+	float zfar=1000.0f;
+	build_perspective_matrix(m, fov, aspect, znear, zfar);
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(m);
+
+    // set up the scene in modelview mode
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
 
 }
 

@@ -53,8 +53,8 @@ console_widget::console_widget(QGraphicsWidget *parent) :
     m_backlog_proxy->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     m_backlog_proxy->setFocusPolicy(Qt::WheelFocus);
     m_backlog_widget->setText("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                              "[Debug Console Started]\n"
-                              "Press Alt + Space to show/hide this console.\n");
+                              "[Console Started]\n"
+                              "Press Ctrl + Space to show/hide this console.\n");
     m_backlog_widget->moveCursor(QTextCursor::End);
 
     // add the subwidgets to the layout

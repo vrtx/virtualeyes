@@ -29,6 +29,7 @@ add_definitions(-DQT_GUI_LIBS -DQT_CORE_LIB)
 add_definitions(-Wall)
 add_definitions(-Werror)
 add_definitions(-g)
+# add_definitions(-DDEBUG_ALLOCATIONS)
 # add_definitions(-std=gnu++0x)
 
 # include source directory

@@ -84,49 +84,13 @@ void main_view::initialize()
     m_cpu_state_widget->setPos(width(), height() / 8);
     //        m_cpu_state_widget->setFlag(QGraphicsItem::ItemIsMovable);
     m_cpu_state_widget->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-//    m_cpu_state_widget->setPlainText("CPU: x86-64, AddrSize: 64-bit, PAE, ...\n"
-//                                     "EAX: 0x00001023    EBX: 0xFADFADF    \n"
-//                                     "EAX: 0x00001023    EBX: 0xFADFADF    \n"
-//                                     "EAX: 0x00001023    EBX: 0xFADFADF    \n"
-//                                     "EAX: 0x00001023    EBX: 0xFADFADF    \n"
-//                                     "EAX: 0x00001023    EBX: 0xFADFADF    \n"
-//                                     "EAX: 0x00001023    EBX: 0xFADFADF    \n"
-//                                     "EAX: 0x00001023    EBX: 0xFADFADF    \n");
-    m_cpu_state_widget->setPlainText("TODO:        \n"
-                                     "----------\n"
-                                     "GL Interact:          WIP    \n"
-                                     "GL TexMap:            WIP    \n"
-                                     "Execution Transport:  NS     \n"
-                                     "Snapshot Layout:      NS     \n"
-                                     "Region Layout:        NS     \n"
-                                     "Struct Layout:        NS     \n"
-                                     "Layout by BP:         NS     \n"
-                                     "Layout by Struct:     NS     \n"
-                                     "Layout by MemSrch:    NS     \n"
-                                     "Layout by Time:       NS     \n"
-                                     );
+    m_cpu_state_widget->setPlainText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+	// m_cpu_state_widget->hide();
 
-
-    //        // add the overlayed catchpoint list
-    //        QStringList l_catchpt_col_names;
-    //        l_catchpt_col_names.push_back(QString("#"));
-    //        l_catchpt_col_names.push_back(QString("Function"));
-    //        m_catchpoint_widget = new QTreeWidget;
-    //        m_catchpoint_widget->setHeaderLabels(l_catchpt_col_names);
-    //        m_catchpoint_widget->setMinimumSize(140, 120);
-    //        m_catchpoint_widget->setMaximumSize(280, 1200);
-    //        m_breakpoint_widget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::MinimumExpanding);
-    //        m_catchpoint_widget->setStyleSheet(g_style_mgr->qtree());
-    //        m_catchpoint_widget->setWindowOpacity(0.75f);
-    //        m_catchpoint_widget->setColumnWidth(0, 16);
-    //        m_catchpoint_widget->setColumnWidth(1, 50);
-    //        m_catchpoint_proxy = m_veye_scene->addWidget(m_catchpoint_widget);
-    //        m_catchpoint_proxy->setFlag(QGraphicsItem::ItemIsMovable);
-    //        m_catchpoint_proxy->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-
-    // create the timeline widget
+    // // create the timeline widget
     m_timeline_widget = new timeline_widget;
     m_timeline_widget->initialize();
+	m_timeline_widget->hide();
 
     // prettify the layout
     m_layout->setHorizontalSpacing(0);
@@ -137,7 +101,7 @@ void main_view::initialize()
     m_layout->setRowMaximumHeight(2, 220);
     m_layout->setColumnMaximumWidth(0, 160);
     m_layout->setColumnStretchFactor(1, 1);
-    m_layout->addItem(m_timeline_widget->proxy, 0, 0, 1, 2);
+    // m_layout->addItem(m_timeline_widget->proxy, 0, 0, 1, 2);
     m_layout->addItem(m_breakpoint_proxy, 1, 0, 1, 1);
     m_layout->addItem(m_console_widget.raw_ptr, 2, 0, 1, 2);
     // m_layout->addItem(m_catchpoint_proxy, 2, 0);
@@ -188,17 +152,14 @@ void main_view::toggle_console()
 //        m_console_widget->setVisible(false);
 //        m_console_widget->setPreferredSize(0, 0);
 
-
-        // ** LEAK **
+         // ** LEAK **
         QPropertyAnimation *animation = new QPropertyAnimation(global <main_view>()->m_console_widget->m_backlog_widget, "geometry");
-        animation->setDuration(500);
+        animation->setDuration(300);
         animation->setStartValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry());
         animation->setEndValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry().adjusted(0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() - 30,
                                                                                                              0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() - 30));
         animation->setEasingCurve(QEasingCurve::OutBounce);
         animation->start();
-
-
 
     } else {
         // widget is hidden; restore visibility
@@ -206,6 +167,14 @@ void main_view::toggle_console()
         m_console_widget->m_input_widget->setFocus();
         m_console_widget->setPreferredSize(width(), height() / 3);
         m_console_widget->show();
+        QPropertyAnimation *animation = new QPropertyAnimation(global <main_view>()->m_console_widget->m_backlog_widget, "geometry");
+        animation->setDuration(300);
+        animation->setStartValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry());
+        animation->setEndValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry().adjusted(0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() + 30,
+                                                                                                             0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() + 30));
+        animation->setEasingCurve(QEasingCurve::OutBounce);
+        animation->start();
+
     }
 
 }

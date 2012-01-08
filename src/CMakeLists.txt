@@ -17,6 +17,7 @@ SET(SRCS
         core/vexcept.cpp
         core/debug.cpp
         core/store.cpp
+        core/db.cpp
         core/enum_convert.cpp
         vm_iface/vm_iface.cpp
         breakpoint.cpp
@@ -47,6 +48,7 @@ SET(HDRS
         core/vexcept.hpp
         core/global.hpp
         core/store.hpp
+        core/db.hpp
         core/enum_convert.hpp
         vm_iface/vm_iface.hpp
         models/x86_32.hpp

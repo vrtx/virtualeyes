@@ -16,8 +16,12 @@
 int64_t global_handle::global_handle_index = 0;
 handle_map_t global_handle::global_handle_map;
 
-#undef VREF_TRACE
-#define VREF_TRACE(...)  cout << debug_log::generate_prefix(__FILE__, __LINE__, __FUNCTION__).toStdString() << __VA_ARGS__ << endl;
+#ifdef DEBUG_ALLOCATIONS
+#  undef VREF_TRACE
+#  define VREF_TRACE(...)  cout << debug_log::generate_prefix(__FILE__, __LINE__, __FUNCTION__).toStdString() << __VA_ARGS__ << endl;
+#else
+#  define VREF_TRACE(...) do {} while (0)
+#endif
 
 // Member Functions
 handle_base::handle_base() :

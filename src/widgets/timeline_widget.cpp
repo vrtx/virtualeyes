@@ -68,14 +68,14 @@ void timeline_widget::initialize()
         setStyleSheet(g_style_mgr->widget());
 
         // load the icons
-        r_expand =      new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
-        r_collapse =    new QGraphicsPixmapItem(QPixmap(":/icons/iconic/black/cog_alt_32x32.png"));
-        r_snapshot =    new QGraphicsPixmapItem(QPixmap(":/icons/iconic/black/cog_alt_32x32.png"));
-        r_breakpoint =  new QGraphicsPixmapItem(QPixmap(":/icons/iconic/blue/fork_28x32.png"));
-        r_watchpoint =  new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
-        r_start =       new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
-        r_stop =        new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
-        r_notes =       new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
+        // r_expand =      new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
+        // r_collapse =    new QGraphicsPixmapItem(QPixmap(":/icons/iconic/black/cog_alt_32x32.png"));
+        // r_snapshot =    new QGraphicsPixmapItem(QPixmap(":/icons/iconic/black/cog_alt_32x32.png"));
+        // r_breakpoint =  new QGraphicsPixmapItem(QPixmap(":/icons/iconic/blue/fork_28x32.png"));
+        // r_watchpoint =  new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
+        // r_start =       new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
+        // r_stop =        new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
+        // r_notes =       new QGraphicsPixmapItem(QPixmap(":/icons/scroll_arrow_vert_tan.png"));
         r_playhead =    new QGraphicsPixmapItem(QPixmap(":/timeline/iconic/green/first_8x8.png"));
         r_clock_icon =  new QGraphicsPixmapItem(QPixmap(":/timeline/iconic/gray_light/clock_12x12.png"));
 
@@ -102,25 +102,18 @@ void timeline_widget::initialize()
 
 
         // Add icons to the scene
-        g_main_view->m_veye_scene->addItem(r_playhead);
-        g_main_view->m_veye_scene->addItem(r_clock_icon);
-//        g_main_view->m_veye_scene->addItem(r_breakpoint);
-//        g_main_view->m_veye_scene->addItem(r_expand);
-//        g_main_view->m_veye_scene->addItem(r_collapse);
-//        g_main_view->m_veye_scene->addItem(r_snapshot);
-//        g_main_view->m_veye_scene->addItem(r_watchpoint);
-//        g_main_view->m_veye_scene->addItem(r_start);
-//        g_main_view->m_veye_scene->addItem(r_stop);
-//        g_main_view->m_veye_scene->addItem(r_notes);
+        // g_main_view->m_veye_scene->addItem(r_playhead);
+        // g_main_view->m_veye_scene->addItem(r_clock_icon);
 
         // Position the icons
-        r_playhead->setOpacity(0.6f);
-        r_playhead->rotate(90);
-        r_playhead->setPos(width() / 2, 0);
-        r_playhead->setFlag(QGraphicsItem::ItemIsMovable);
-        r_clock_icon->setOpacity(0.4f);
-        r_clock_icon->setPos(4, 3);
-        r_clock_icon->setToolTip(QDateTime::currentDateTime().toString("ddd MMMM d, yyyy   h:m:s.zzz ap"));
+        // r_playhead->setOpacity(0.6f);
+        // r_playhead->rotate(90);
+        // r_playhead->setPos(width() / 2, 0);
+        // r_playhead->setFlag(QGraphicsItem::ItemIsMovable);
+        // r_clock_icon->setOpacity(0.4f);
+        // r_clock_icon->setPos(4, 3);
+        // r_clock_icon->setToolTip(QDateTime::currentDateTime().toString("ddd MMMM d, yyyy   h:m:s.zzz ap"));
+
 //        int cur_pos = width();
 //        r_expand->setPos(cur_pos -= r_expand->boundingRect().width(), 0);
 //        r_expand->show();
@@ -211,8 +204,9 @@ void timeline_widget::update_timeline_width(quint32 a_width)
             l_tick = new QGraphicsLineItem(TIMELINE_COLUMN_WIDTH + i * TIMELINE_TICK_WIDTH, 1,
                                            TIMELINE_COLUMN_WIDTH + i * TIMELINE_TICK_WIDTH, TIMELINE_HEADER_HEIGHT / 3, NULL, g_main_view->m_veye_scene.raw_ptr);
             // draw a label
-            QGraphicsSimpleTextItem *l_label = new QGraphicsSimpleTextItem(QDateTime::currentDateTime().toString("hh:mm:ss.zzz"), NULL,
-                                                                           g_main_view->m_veye_scene.raw_ptr);
+            // QGraphicsSimpleTextItem *l_label = new QGraphicsSimpleTextItem(QDateTime::currentDateTime().toString("hh:mm:ss.zzz"), NULL,
+            //                                                                g_main_view->m_veye_scene.raw_ptr);
+            QGraphicsSimpleTextItem *l_label = new QGraphicsSimpleTextItem("00:00:01", NULL, g_main_view->m_veye_scene.raw_ptr);
             l_label->setPen(QPen(global <style_mgr>()->m_default_font_pen_color));
             l_label->setBrush(QBrush(global <style_mgr>()->m_default_font_brush_color));
             l_label->setFont(global <style_mgr>()->m_timeline_font);

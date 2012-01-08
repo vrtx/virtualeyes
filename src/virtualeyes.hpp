@@ -31,7 +31,6 @@ namespace veyes {
 	    virtual ~virtualeyes();
 	    void initialize();
 	    void finalize(int a_retval = 0);
-		void feed_thread();
 	    // Core Singleton
 	    static virtualeyes *instance;
 
@@ -44,23 +43,6 @@ namespace veyes {
 
     signals:
         void update_active_session();   // signal new session creation
-
-	public:
-		// nested realtime data colletion thread
-		class realtime_feed : public QThread
-		{
-		public:
-		    void run()
-			{
-				t_feed();
-			    // exec(); // start qt event loop for this thread
-			}
-		private:
-			void t_feed();
-
-		};
-
-		realtime_feed test_feed;
 
     };
 
