@@ -25,14 +25,15 @@ namespace veyes {
 						  public handle_base
 	{
 	public:
-		realtime_feed(const soft_handle<db> &a_db, const QString &a_collection);
+		realtime_feed(const soft_handle<db> &a_db, const QString &a_collection, int a_interval = 1);
 		virtual ~realtime_feed();			
 	    virtual void run();
 
 	private:
 		void t_feed();
 		soft_handle<db> active_db;
-		QString collection; 
+		QString collection;
+		int interval;
 
 	};
 

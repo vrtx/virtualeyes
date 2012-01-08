@@ -17,9 +17,12 @@
 using namespace veyes;
 
 // ctor
-realtime_feed::realtime_feed(const soft_handle<db> &a_db, const QString &a_collection) :
+/// @param a_db		db to connect to
+/// @param a_ns		namespace to read from (eg. database.collection)
+realtime_feed::realtime_feed(const soft_handle<db> &a_db, const QString &a_ns, int a_interval) :
 	active_db(a_db),
-	collection(a_collection) 
+	collection(a_ns),
+	interval(a_interval)
 { 
 }
 
@@ -52,7 +55,7 @@ void realtime_feed::t_feed()
                 break;    // cursor inactive; retry
 
             // all available data has been read.  busywait.
-            sleep(1);
+            sleep(interval);
             continue;
         }
 
