@@ -13,7 +13,6 @@
 #include "main_view.hpp"
 #include "veye_scene.hpp"
 #include "virtualeyes.hpp"
-#include "session.hpp"
 #include "widgets/style_mgr.hpp"
 #include <QGLWidget>
 #include <QGraphicsTextItem>
@@ -106,7 +105,7 @@ void main_view::initialize()
     m_layout->setColumnMaximumWidth(0, 160);
     m_layout->setColumnStretchFactor(1, 1);
     // m_layout->addItem(m_timeline_widget->proxy, 0, 0, 1, 2);
-    m_layout->addItem(m_connection_widget->proxy, 0, 0, 1, 2);
+    m_layout->addItem(m_connection_widget->proxy, 0, 0, 1, 1);
     m_layout->addItem(m_breakpoint_proxy, 1, 0, 1, 1);
     m_layout->addItem(m_console_widget.raw_ptr, 2, 0, 1, 2);
     // m_layout->addItem(m_catchpoint_proxy, 2, 0);

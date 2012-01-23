@@ -18,7 +18,6 @@
 #include <QtGui/QApplication>
 #include "common.hpp"
 #include "handle.hpp"
-#include "session.hpp"
 #include "virtualeyes.hpp"
 
 

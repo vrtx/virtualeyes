@@ -16,7 +16,6 @@
 #include "soft_handle.hpp"
 #include "common.hpp"
 #include "handle.hpp"
-#include "session.hpp"
 #include "breakpoint.hpp"
 #include <QGraphicsScene>
 #include <QGLWidget>

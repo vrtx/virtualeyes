@@ -51,7 +51,6 @@ namespace veyes {
                       emit do_connect(); 
                     else 
                       emit do_disconnect(); 
-                    m_connected = !m_connected;
                 }
         private:
                 // Member Functions

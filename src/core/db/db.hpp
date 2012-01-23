@@ -16,6 +16,7 @@
 #include "handle.hpp"
 #include <QObject>
 #include <QThread>
+#include <QMutex>
 #include <client/dbclient.h>
 #include <client/connpool.h>
 #include <util/goodies.h>
@@ -64,6 +65,7 @@ namespace veyes {
         bool is_configured;
         ScopedDbConnection *conn;
         db_config_t config;
+        mutable QMutex db_mutex;
     };
 
 }

@@ -42,17 +42,14 @@ void db::set_config(const db_connect_config &a_config)
 bool db::connect(int timeout)
 {
     try {
-
-        if (conn != NULL) {
-            // kill existing connection
-            conn->kill();
-            delete conn;
+        if (conn == NULL || !conn->ok()) {
+            // create a new connection
+            conn = new ScopedDbConnection(config.hostname + ":" + boost::lexical_cast <string>(config.port), timeout);
+            emit connecting();
         }
-        conn = new ScopedDbConnection(config.hostname + ":" + boost::lexical_cast <string>(config.port), timeout);
-        emit connecting();
+
     } catch(const DBException &e) {
-        conn = NULL;
-        VDEBUG(0, "Database Exception: " << e.what());
+        VDEBUG(2, "Database Exception: " << e.what());
         emit disconnected_error();
         return false;
     }
@@ -74,6 +71,7 @@ void db::disconnect(bool force)
         conn->kill();
     else
         conn->done();
+    VDEBUG(9, "Disconnected from databasae");
     emit disconnected();
 }
 
@@ -88,9 +86,9 @@ auto_ptr <DBClientCursor> db::query(const string &ns, Query query, int nToReturn
                                     int nToSkip, const BSONObj *fieldsToReturn, 
                                     int queryOptions, int batchSize) {
     try {
+
         if (!is_ready())
             throw vexcept("Database connection is not ready");
-
         return conn->get()->query(ns, query, nToReturn, nToSkip, 
                                   fieldsToReturn, queryOptions, batchSize);
 

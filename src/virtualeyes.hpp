@@ -21,6 +21,7 @@
 
 namespace veyes {
 
+    typedef map < QString, handle <realtime_feed> > rt_feed_map_t;
     class virtualeyes : public QObject,
                         public handle_base
     {
@@ -31,12 +32,17 @@ namespace veyes {
 	    virtual ~virtualeyes();
 	    void initialize();
 	    void finalize(int a_retval = 0);
+        soft_handle<db> get_db();
+        soft_handle<realtime_feed> init_rt_feed(const char *collection_name, int timeout = 50, bool load_initial = false);
 	    // Core Singleton
 	    static virtualeyes *instance;
 
 	    // Composed Objects
 	    handle <session> m_active_session;
 	    handle <vscript> m_script_engine;
+        handle <db> active_db;
+    private:
+        rt_feed_map_t m_rt_feeds;
 
     public slots:
         void new_session();             // register a new collection snapshot with the session

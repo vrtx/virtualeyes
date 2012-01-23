@@ -11,7 +11,7 @@
 
 #include "realtime_feed.hpp"
 #include "common.hpp"
-
+#include "virtualeyes.hpp"
 #include "main_view.hpp"
 
 using namespace veyes;
@@ -40,8 +40,12 @@ void realtime_feed::run()
 // get a realtime feed (runs in it's own thread)
 void realtime_feed::t_feed()
 {
+
+    // connect Qt signals
+	connect(this, SIGNAL(new_event(const BSONObj)),
+            global <virtualeyes>()->m_active_session.raw_ptr, SLOT(process_new_event(const BSONObj)));
+
     BSONElement lastId = minKey.firstElement();
-    Query query = Query();  // load everything (TODO:  set realtime feed instance's collection and query)
 
     while ( true ) {
         // until thread is canceled
@@ -49,18 +53,18 @@ void realtime_feed::t_feed()
         try {
 
             if (!active_db->is_ready()) {
-                // db error; sleep and retry
-                active_db->connect();
-                // QThread::msleep(500);
+                // db error; sleep until reconnected
+                // active_db->connect();
+                QThread::msleep(500);
                 continue;
             }
 
-            auto_ptr<DBClientCursor> c = active_db->query(collection.toStdString(), query, 
+            auto_ptr<DBClientCursor> c = active_db->query(collection.toStdString(), QUERY("_id" << GTE << lastId), 
                                                           0, 0, 
                                                           0, QueryOption_CursorTailable);
 
             while (active_db->is_ready()) {
-        		// while new data can be read
+                // while new data can be read
                 // TODO: create async-friendly db iface
                 if (!c->more()) {
                     if (c->isDead())
@@ -72,13 +76,15 @@ void realtime_feed::t_feed()
                 }
 
                 BSONObj o = c->next();
-                lastId = o["_id"];
-                VDEBUG(0, o.toString().c_str());
-                // emit new_event(o);  // emit the event
+                if (o.isValid()) {
+                    lastId = o["_id"];
+                    BSONObj ev_o = o.copy();
+                    emit new_event(ev_o);  // emit the event
+                }
             }
 
         } catch(const DBException &e) {
-            VDEBUG(0, "Database Error: " << e.what());
+            // VDEBUG(0, "Database Error: " << e.what());
         }
 
         // db disconnect or failed read. sleep and retry

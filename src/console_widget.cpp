@@ -16,7 +16,6 @@
 #include "console_widget.hpp"
 #include "veye_scene.hpp"
 #include "virtualeyes.hpp"
-#include "session.hpp"
 #include "widgets/style_mgr.hpp"
 #include "main_view.hpp"
 #include <QGLWidget>

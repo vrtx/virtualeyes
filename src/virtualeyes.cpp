@@ -33,6 +33,26 @@ virtualeyes::virtualeyes() :
 
 }
 
+// @brief      Get the active DB connection
+soft_handle<db> virtualeyes::get_db()
+{
+	if (active_db.is_valid())
+		// connection exists
+		return active_db;
+    return (db*)NULL;
+}
+
+// @brief      Add a new realtime feed to this session
+// @param[in]  a_snapshot   The snapshot object to add to the session
+soft_handle <realtime_feed> virtualeyes::init_rt_feed(const char *collection_name, int timeout, bool load_initial)
+{
+    handle <realtime_feed> retval = new realtime_feed(get_db(), collection_name, timeout);
+    m_rt_feeds.insert(pair <const char *, handle <realtime_feed> >(collection_name, retval));
+    retval->start();
+
+    return retval;
+}
+
 void virtualeyes::initialize()
 {
     // initialize the enum maps
@@ -43,19 +63,23 @@ void virtualeyes::initialize()
     global <main_view> g_main_view;
     g_main_view->initialize();
     g_main_window->initialize();
-    //        g_main_window->showMaximized();  // start fullscreen
+
+    g_main_window->showMaximized();  // start fullscreen
     // TODO: FEATURE: save window geom state on exit and restore here.
 
     // init blank session
     m_active_session = handle <session>(new session);
     m_active_session->attach("localhost:1234");
 
-	// TEST: start listening for real-time feeds
-	db_config_t db_config;
-	db_config.hostname="localhost";
-	db_config.port=27017;
-	db_config.read_only=true;
-	m_active_session->init_db(db_config);
+    // initialize the db
+    qRegisterMetaType <BSONObj>("BSONObj");
+    db_config_t db_config;
+    db_config.hostname="localhost";
+    db_config.port=27017;
+    db_config.read_only=true;
+    active_db = new db;
+    active_db->set_config(db_config);
+
     // g_main_view->m_timeline_widget->connect_session();
 
     // connect the snapshot -> veye_scene signal indicating a snapshot has been added
@@ -63,29 +87,34 @@ void virtualeyes::initialize()
             g_main_view.raw_ptr, SLOT(add_snapshot(const veyes::handle <snapshot> &)));
 
     // connect the db signals
-    connect(m_active_session->get_db().raw_ptr, SIGNAL(connected()),
+    connect(active_db.raw_ptr, SIGNAL(connected()),
             g_main_view->m_connection_widget.raw_ptr, SLOT(db_connected()));
-    connect(m_active_session->get_db().raw_ptr, SIGNAL(connecting()),
+    connect(active_db.raw_ptr, SIGNAL(connecting()),
             g_main_view->m_connection_widget.raw_ptr, SLOT(db_connecting()));
-    connect(m_active_session->get_db().raw_ptr, SIGNAL(disconnected()),
+    connect(active_db.raw_ptr, SIGNAL(disconnected()),
             g_main_view->m_connection_widget.raw_ptr, SLOT(db_disconnected()));
-    connect(m_active_session->get_db().raw_ptr, SIGNAL(disconnected_error()),
+    connect(active_db.raw_ptr, SIGNAL(disconnected_error()),
             g_main_view->m_connection_widget.raw_ptr, SLOT(db_disconnected())); // TODO: db connection error signal
 
     // db buttons
-    connect(m_active_session->get_db().raw_ptr, SIGNAL(connected()),
+    connect(active_db.raw_ptr, SIGNAL(connected()),
             g_main_view->m_connection_widget.raw_ptr, SLOT(db_connected()));
-    connect(m_active_session->get_db().raw_ptr, SIGNAL(connected()),
+    connect(active_db.raw_ptr, SIGNAL(connected()),
             g_main_view->m_connection_widget.raw_ptr, SLOT(db_connected()));
 
     connect(g_main_view->m_connection_widget.raw_ptr, SIGNAL(do_connect()),
-            m_active_session->get_db().raw_ptr, SLOT(connect()));
+            active_db.raw_ptr, SLOT(connect()));
     connect(g_main_view->m_connection_widget.raw_ptr, SIGNAL(do_disconnect()),
-            m_active_session->get_db().raw_ptr, SLOT(disconnect()));
+            active_db.raw_ptr, SLOT(disconnect()));
 
     // initialize the interpreter
     m_script_engine = handle <vscript>(new vscript);
-	m_active_session->init_rt_feed("test.realtime_feed", 50);
+
+    // connect to the db
+    active_db->connect();
+
+    // create a new realtime feed
+	init_rt_feed("test.realtime_feed", 50);
 
 }
 
