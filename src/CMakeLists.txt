@@ -35,6 +35,7 @@ SET(SRCS
         widgets/style_mgr.cpp
         widgets/abstract_hud_widget.cpp
         widgets/timeline_widget.cpp
+        widgets/connection_widget.cpp
 )
 
 # Header files
@@ -70,6 +71,7 @@ SET(HDRS
         widgets/style_mgr.hpp
         widgets/abstract_hud_widget.hpp
         widgets/timeline_widget.hpp
+        widgets/connection_widget.hpp
 )
 
 # Compile Qt metaobjects and forms
@@ -84,6 +86,9 @@ QT4_WRAP_CPP(MOC_SRCS main_window.hpp
                       snapshot.hpp
                       widgets/abstract_hud_widget.hpp
                       widgets/timeline_widget.hpp
+                      widgets/connection_widget.hpp
+                      core/db/db.hpp
+                      core/db/realtime_feed.hpp
 )
 
 SET(VEYE_RESOURCES

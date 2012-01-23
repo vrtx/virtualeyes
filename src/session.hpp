@@ -20,10 +20,12 @@
 #include "handle_base.hpp"
 #include "vm_run.hpp"
 #include "core/db/db.hpp"
+#include "core/db/realtime_feed.hpp"
 
 namespace veyes
 {
         typedef string target_config;               // BB TODO:  temp until config classes are implemented
+        typedef map < QString, handle <realtime_feed> > rt_feed_map_t;
 
         ///////////////////////////////////////////////////////
         /// @class   session
@@ -46,12 +48,14 @@ namespace veyes
 	        virtual ~session();                             // dtor
 	        int attach(const target_config &a_target_config);       // attach to a system and/or process
 			soft_handle<db> get_db();						// get (or create+get) a connection to the db
-			void set_db_conf(const db_config_t &a_conf);	// set the db connection info
+			void init_db(const db_config_t &a_conf);	// set the db connection info
+            soft_handle<realtime_feed> init_rt_feed(const char *collection_name, int timeout = 50, bool load_initial = false);
 
         public slots:
             void add_snapshot(const veyes::handle <snapshot> &a_snapshot);         // register a new collection snapshot with the session
             void add_breakpoint(const veyes::handle <breakpoint> &a_breakpoint);   // register a new breakpoint with the session
             void add_vm_run(const veyes::handle <vm_run> &a_vm_run);               // register a new vm run with the session
+            void process_new_event(const BSONObj &o);                              // process and forward the new event
 
         signals:
             void session_created();                                                // signal new session creation
@@ -61,7 +65,8 @@ namespace veyes
 
         private:
 			db_config_t db_conf;
-			handle<db> active_db;
+			handle<db> m_active_db;
+            rt_feed_map_t m_rt_feeds;
         };
 
 }

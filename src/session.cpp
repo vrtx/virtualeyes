@@ -16,6 +16,7 @@
 #include "models/x86_32.hpp"
 #include "opsys/win2k8.hpp"
 #include "target_host.hpp"
+#include "main_view.hpp"
 
 /// @brief   Default constructor
 session::session() :
@@ -64,25 +65,40 @@ int session::attach(const target_config &a_config)
 }
 
 /// @brief		Set the db configuration params
-void session::set_db_conf(const db_config_t &a_conf)
+void session::init_db(const db_config_t &a_conf)
 {
 	db_conf = a_conf;
+    m_active_db = new db;
+    m_active_db->set_config(db_conf);
+    m_active_db->connect();
 }	
 
 // @brief      Get the active DB connection
 soft_handle<db> session::get_db()
 {
-	if (active_db.is_valid())
+	if (m_active_db.is_valid())
 		// connection exists
-		return active_db;
-
-	// connect
-	active_db = new db;
-	active_db->set_config(db_conf);
-	active_db->connect();
-	return active_db;
+		return m_active_db;
+    return new db;
 }
 
+// @brief      Add a new realtime feed to this session
+// @param[in]  a_snapshot   The snapshot object to add to the session
+soft_handle <realtime_feed> session::init_rt_feed(const char *collection_name, int timeout, bool load_initial)
+{
+    handle <realtime_feed> retval = new realtime_feed(get_db(), collection_name, timeout);
+    m_rt_feeds.insert(pair <const char *, handle <realtime_feed> >(collection_name, retval));
+    connect(retval.raw_ptr, SIGNAL(new_event(const BSONObj &)),
+            this, SLOT(process_new_event(const BSONObj &)));
+    retval->start();
+
+    return retval;
+}
+
+void session::process_new_event(const BSONObj &o)
+{
+    cout << o.toString() << endl;
+}
 
 // @brief      Add a new snapshot to the session
 // @param[in]  a_snapshot   The snapshot object to add to the session

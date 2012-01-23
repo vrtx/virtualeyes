@@ -84,13 +84,17 @@ void main_view::initialize()
     m_cpu_state_widget->setPos(width(), height() / 8);
     //        m_cpu_state_widget->setFlag(QGraphicsItem::ItemIsMovable);
     m_cpu_state_widget->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-    m_cpu_state_widget->setPlainText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-	// m_cpu_state_widget->hide();
+    // m_cpu_state_widget->setPlainText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+    m_cpu_state_widget->hide();
 
-    // // create the timeline widget
-    m_timeline_widget = new timeline_widget;
-    m_timeline_widget->initialize();
-	m_timeline_widget->hide();
+    // create the timeline widget
+    // m_timeline_widget = new timeline_widget;
+    // m_timeline_widget->initialize();
+    // m_timeline_widget->hide();
+    // create the connection button
+    m_connection_widget = new connection_widget;
+    m_connection_widget->initialize();
+    // m_connection_widget->hide();
 
     // prettify the layout
     m_layout->setHorizontalSpacing(0);
@@ -102,6 +106,7 @@ void main_view::initialize()
     m_layout->setColumnMaximumWidth(0, 160);
     m_layout->setColumnStretchFactor(1, 1);
     // m_layout->addItem(m_timeline_widget->proxy, 0, 0, 1, 2);
+    m_layout->addItem(m_connection_widget->proxy, 0, 0, 1, 2);
     m_layout->addItem(m_breakpoint_proxy, 1, 0, 1, 1);
     m_layout->addItem(m_console_widget.raw_ptr, 2, 0, 1, 2);
     // m_layout->addItem(m_catchpoint_proxy, 2, 0);

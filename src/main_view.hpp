@@ -9,8 +9,7 @@
 // @date    2/3/11
 ///////////////////////////////////////////////////////
 
-#ifndef VIRTUALEYES_main_view_HPP
-#define VIRTUALEYES_main_view_HPP
+#pragma once
 
 #include <QtGui>
 #include "common.hpp"
@@ -20,6 +19,7 @@
 #include "snapshot.hpp"
 #include "veye_scene.hpp"
 #include "widgets/timeline_widget.hpp"
+#include "widgets/connection_widget.hpp"
 
 namespace veyes
 {
@@ -45,6 +45,7 @@ namespace veyes
         veyes::handle <veye_scene> m_veye_scene;           // OpenGL scene (drawn in background)
         veyes::handle <console_widget> m_console_widget;   // interactive console
         veyes::handle <timeline_widget> m_timeline_widget; // timeline HUD component
+        veyes::handle <connection_widget> m_connection_widget; // connection HUD component
 
         QTreeWidget *m_breakpoint_widget;                  // breakpoint list view
         QGraphicsProxyWidget *m_breakpoint_proxy;
@@ -82,6 +83,3 @@ namespace veyes
     };
 
 }
-
-
-#endif

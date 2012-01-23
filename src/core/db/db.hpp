@@ -25,35 +25,45 @@ using namespace boost;
 
 namespace veyes {
 
-	// Database configuration details
-	typedef struct db_connect_config {
-		string hostname;
-		int port;
-		string user;
-		string pass;
-		bool read_only;
-		int timeout;
-	} db_config_t;
+    // Database configuration details
+    typedef struct db_connect_config {
+        string hostname;
+        int port;
+        string user;
+        string pass;
+        bool read_only;
+        int timeout;
+    } db_config_t;
 
-	// Access the centralized database
+    // Access the centralized database
     class db : public QObject,
-			   public handle_base
+               public handle_base
     {
+    Q_OBJECT;
     public:
-	    // Member Functions
-	    db();
-	    virtual ~db();
-		void set_config(const db_connect_config &config);
-		void disconnect(bool force = false);
-		bool connect(int timeout = 0);
-		bool is_ready();
-		auto_ptr <DBClientCursor> query(const string &ns, Query query=Query(), int nToReturn=0,
-										int nToSkip=0, const BSONObj *fieldsToReturn=0, 
-										int queryOptions=0, int batchSize=0);
-	private:
-		bool is_configured;
-		ScopedDbConnection *conn;
-		db_config_t config;
+        db();
+        virtual ~db();
+        void set_config(const db_connect_config &config);
+        bool is_ready();
+        void connect_signals();
+        auto_ptr <DBClientCursor> query(const string &ns, Query query=Query(), int nToReturn=0,
+                                        int nToSkip=0, const BSONObj *fieldsToReturn=0, 
+                                        int queryOptions=0, int batchSize=0);
+
+    signals:
+        void connecting();
+        void connected();
+        void disconnected();
+        void disconnected_error();
+
+    public slots:
+        bool connect(int timeout = 0);
+        void disconnect(bool force = false);
+
+    private:
+        bool is_configured;
+        ScopedDbConnection *conn;
+        db_config_t config;
     };
 
 }

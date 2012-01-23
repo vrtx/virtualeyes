@@ -24,10 +24,14 @@ namespace veyes {
 	class realtime_feed : public QThread,
 						  public handle_base
 	{
+    Q_OBJECT
 	public:
-		realtime_feed(const soft_handle<db> &a_db, const QString &a_collection, int a_interval = 1);
-		virtual ~realtime_feed();			
-	    virtual void run();
+		realtime_feed(const soft_handle<db> &a_db, const QString &a_collection, int a_interval_ms = 1);
+		~realtime_feed();			
+	    void run();
+
+    signals:
+        void new_event(const BSONObj &event_obj);
 
 	private:
 		void t_feed();
