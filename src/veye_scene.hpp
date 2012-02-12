@@ -77,6 +77,7 @@ namespace veyes {
                 QColor text_color;
                 GLuint test_texture;
                 qreal aspect_ratio;
+                float view_matrix[16];
 
                 // Member Functions
                 inline void reset_gl();

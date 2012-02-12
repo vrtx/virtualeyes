@@ -68,9 +68,9 @@ namespace veyes
         // Class Variables
 
     private:
-        // Member functions
-        QSize sizeHint() const;                 // default window size
-        QSize minimumSizeHint() const;          // minimum size of window
+        // // Member functions
+        // QSize sizeHint() const;                 // default window size
+        // QSize minimumSizeHint() const;          // minimum size of window
 
     };
 

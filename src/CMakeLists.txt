@@ -129,13 +129,12 @@ ENDIF(UNIX)
 TARGET_LINK_LIBRARIES(virtualeyes
                       ${QT_LIBRARIES}
                       ${OPENGL_LIBRARIES}
-                      # migdb
 					  -L${CMAKE_SOURCE_DIR}/../mongo/
 					  mongoclient
 					  boost_thread-mt
 					  boost_filesystem-mt
 					  boost_system-mt
-                      # -L/opt/local/lib/
+                      # -L/opt/local/lib/      # for macports
                       # tcmalloc
                       # profiler
 )

@@ -130,7 +130,7 @@ const QString enum_convert <_Tp>::to_string(const int a_enum_idx)
     // lookup and return the value from the left side of the bimap
     try {
         return enum_map.left.at(a_enum_idx);
-    } catch (out_of_range e) {
+    } catch (out_of_range &e) {
         return "UNKNOWN";
     }
 }
@@ -141,8 +141,8 @@ const int enum_convert <_Tp>::from_string(const QString &a_enum_str)
 
     // lookup and return the value from the right side of the bimap
     try {
-        return enum_map.right.find(a_enum_str)->first();
-    } catch (out_of_range e) {
+        return enum_map.right.find(a_enum_str)->second;
+    } catch (out_of_range &e) {
         return 0xdead;
     }
 

@@ -6,10 +6,6 @@
 #
 ###################################################
 
-# Override the default compiler (needs c++0x support)
-# SET (CMAKE_CXX_COMPILER "g++-4.5")
-# SET (CMAKE_C_COMPILER "gcc-4.5")
-
 # Project setup
 project(virtualeyes)
 cmake_minimum_required(VERSION 2.8.0)

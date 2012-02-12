@@ -207,14 +207,14 @@ void console_widget::wheelEvent(QGraphicsSceneWheelEvent *a_event)
 //            m_backlog_widget->verticalScrollBar()->setValue(m_backlog_widget->verticalScrollBar()->maximum());   // scroll backlog window to bottom
  }
 
-// Default Window Size
-QSize console_widget::sizeHint() const
-{
-    return QSize(global <main_view>()->size().width(), 120);
-}
-
-// Minimum Window Size
-QSize console_widget::minimumSizeHint() const
-{
-    return QSize(global <main_view>()->width(), 80);
-}
+// // Default Window Size
+// QSize console_widget::sizeHint() const
+// {
+//     return QSize(global <main_view>()->size().width(), 120);
+// }
+// 
+// // Minimum Window Size
+// QSize console_widget::minimumSizeHint() const
+// {
+//     return QSize(global <main_view>()->width(), 80);
+// }
