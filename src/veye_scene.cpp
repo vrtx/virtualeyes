@@ -57,6 +57,12 @@ void veye_scene::drawBackground(QPainter *painter, const QRectF &)
     glClearColor(bg_red, bg_green, bg_blue, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0f);
+    glEnable(GL_MULTISAMPLE);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthFunc(GL_LEQUAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
     // set up the scene in modelview mode
     glMatrixMode(GL_PROJECTION);
@@ -69,14 +75,7 @@ void veye_scene::drawBackground(QPainter *painter, const QRectF &)
     glLoadIdentity();
     glRotatef(rotate_deg, 0, 1.0f, 0);
     glTranslatef(0.0 - center_x, 0.0 - center_y, -2.0f - zoom);
-    glScalef(1.0f * aspect_ratio, 1.0f, 1.0f);
-
-    glEnable(GL_MULTISAMPLE);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthFunc(GL_LEQUAL);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    // glScalef(1.0f * aspect_ratio, 1.0f, 1.0f);
 
     // paint some markers for testing
     // glColor4f(0.0f, 0.2f, 0.0f, 0.2f);
