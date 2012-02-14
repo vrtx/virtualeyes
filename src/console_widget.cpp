@@ -24,7 +24,8 @@
 // default ctor
 console_widget::console_widget(QGraphicsWidget *parent) :
 		QGraphicsWidget(parent),
-		m_input_widget(new console_input_widget)  // add the input widget
+		m_input_widget(new console_input_widget),  // add the input widget
+        is_open(true)
 {
 
     global <style_mgr> l_style_mgr;
@@ -81,55 +82,46 @@ console_widget::~console_widget()
 }
 
  /// @brief    Process keyboard input while this widget has focus
- void console_widget::keyPressEvent(QKeyEvent *a_event)
- {
+void console_widget::keyPressEvent(QKeyEvent *a_event)
+{
 
-	QScriptValue repl;
-	switch (a_event->key()) {
+    QScriptValue repl;
+    switch (a_event->key()) {
 
-	// console-specific hot keys
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
+        // console-specific hot keys
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            // add the input to the console backlog
+            m_backlog_widget->moveCursor(QTextCursor::End);
+            append(QString("> ").append(m_input_widget->toPlainText()), text_format_t::SCRIPT_IN);
 
-	// if (a_event->modifiers() & Qt::ShiftModifier) {
-		// done entering script
+            // interpret the input
+            repl = global <virtualeyes>()->m_script_engine->core.evaluate(m_input_widget->toPlainText());
+            if (repl.isError())
+                // unable to interpret
+                append(repl.toString(), text_format_t::ERROR);
+            else
+                // add the repl evaluation response to the console backlog
+                append(repl.toString(), text_format_t::SCRIPT_OUT);
 
-		// add the input to the console backlog
-		m_backlog_widget->moveCursor(QTextCursor::End);
-		append(QString("> ").append(m_input_widget->toPlainText()), text_format_t::SCRIPT_IN);
+            // clear the input line
+            m_input_widget->clear();
 
-		// interpret the input
-		repl = global <virtualeyes>()->m_script_engine->core.evaluate(m_input_widget->toPlainText());
-		if (repl.isError())
-			// unable to interpret
-			append(repl.toString(), text_format_t::ERROR);
-		else
-			// add the repl evaluation response to the console backlog
-			append(repl.toString(), text_format_t::SCRIPT_OUT);
-
-		// clear the input line
-		m_input_widget->clear();
-
-	// } else {
-	//      // new line
-	// 
-	// }
-	// 
-         // cleanup
-         m_backlog_widget->verticalScrollBar()->setValue(m_backlog_widget->verticalScrollBar()->maximum());   // scroll backlog window to bottom
-         break;
-     case Qt::Key_Copy:
-     case Qt::Key_Cut:
-     case Qt::Key_Paste:
-             // forward copy/cut/paste to backlog widget
-             QCoreApplication::sendEvent(m_backlog_widget, a_event);
-             break;
-     default:
-             // forward to input widget
-             QCoreApplication::sendEvent(m_input_widget.raw_ptr, a_event);
-             break;
-     }
- }
+            // cleanup
+            m_backlog_widget->verticalScrollBar()->setValue(m_backlog_widget->verticalScrollBar()->maximum());   // scroll backlog window to bottom
+            break;
+        case Qt::Key_Copy:
+        case Qt::Key_Cut:
+        case Qt::Key_Paste:
+            // forward copy/cut/paste to backlog widget
+            QCoreApplication::sendEvent(m_backlog_widget, a_event);
+            break;
+        default:
+            // forward to input widget
+            QCoreApplication::sendEvent(m_input_widget.raw_ptr, a_event);
+        break;
+    }
+}
 
 
 /// @brief  Append a line of data to the console log
@@ -197,15 +189,15 @@ void console_widget::toggle()
 void console_widget::wheelEvent(QGraphicsSceneWheelEvent *a_event)
 {
     QGraphicsWidget::wheelEvent(a_event);
-    QApplication::sendEvent(m_backlog_proxy, a_event);
+    // QApplication::sendEvent(m_backlog_proxy, a_event);
 }
 
- /// @brief window resize event handler
- void console_widget::resize(QResizeEvent *event)
- {
-//            // scroll to the bottom
-//            m_backlog_widget->verticalScrollBar()->setValue(m_backlog_widget->verticalScrollBar()->maximum());   // scroll backlog window to bottom
- }
+/// @brief window resize event handler
+void console_widget::resize(QResizeEvent *event)
+{
+    // scroll to the bottom
+    m_backlog_widget->verticalScrollBar()->setValue(m_backlog_widget->verticalScrollBar()->maximum());   // scroll backlog window to bottom
+}
 
 // // Default Window Size
 // QSize console_widget::sizeHint() const

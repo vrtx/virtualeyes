@@ -77,8 +77,8 @@ void realtime_feed::t_feed()
 
                 BSONObj o = c->next();
                 if (o.isValid()) {
-                    lastId = o["_id"];
                     BSONObj ev_o = o.copy();
+                    lastId = ev_o["_id"];
                     emit new_event(ev_o);  // emit the event
                 }
             }

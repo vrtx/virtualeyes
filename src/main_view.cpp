@@ -74,14 +74,14 @@ void main_view::initialize()
     m_breakpoint_widget->setColumnWidth(1, 50);
     m_breakpoint_widget->setColumnWidth(2, 50);
     m_breakpoint_proxy = m_veye_scene->addWidget(m_breakpoint_widget);
-//    m_breakpoint_proxy->setFlag(QGraphicsItem::ItemIsMovable);
-//    m_breakpoint_proxy->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    m_breakpoint_proxy->setFlag(QGraphicsItem::ItemIsMovable);
+    m_breakpoint_proxy->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
     m_cpu_state_widget = new QGraphicsTextItem;
     g_style_mgr->stylize_text_overlay(m_cpu_state_widget);
     m_veye_scene->addItem(m_cpu_state_widget);
     m_cpu_state_widget->setPos(width(), height() / 8);
-    //        m_cpu_state_widget->setFlag(QGraphicsItem::ItemIsMovable);
+    // m_cpu_state_widget->setFlag(QGraphicsItem::ItemIsMovable);
     m_cpu_state_widget->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     // m_cpu_state_widget->setPlainText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
     m_cpu_state_widget->hide();
@@ -128,14 +128,10 @@ void main_view::resizeEvent(QResizeEvent *event)
 {
     // update the display
     m_veye_scene->setSceneRect(QRect(QPoint(0, 0), event->size()));
-    m_console_widget->m_backlog_widget->ensureCursorVisible();      // scroll the console
+        m_console_widget->m_backlog_widget->ensureCursorVisible();  // scroll the console
     m_container->resize(event->size());                             // resize the containing widget
     m_layout->setPreferredSize(event->size());                      // update the layout's size
     m_layout->updateGeometry();                                     // recalculate the layout so all children are updated
-
-    // update manually placed items
-    m_cpu_state_widget->setPos(event->size().width() - m_cpu_state_widget->boundingRect().width(), event->size().height() / 8);
-
     // update view layout
     QGraphicsView::resizeEvent(event);
 }
@@ -150,37 +146,35 @@ void main_view::add_snapshot(const veyes::handle <snapshot> &a_snapshot)
 /// @brief  Toggle the visibility of the console
 void main_view::toggle_console()
 {
-    if (m_console_widget->isVisible()) {
+    if (m_console_widget->is_open) {
         // item is visible; hide it
-//        m_console_widget->hide();
-//        m_console_widget->setVisible(false);
-//        m_console_widget->setPreferredSize(0, 0);
-
-         // ** LEAK **
+        // m_console_widget->hide();
+        // m_console_widget->setVisible(false);
+        // m_console_widget->setPreferredSize(0, 0);
         QPropertyAnimation *animation = new QPropertyAnimation(global <main_view>()->m_console_widget->m_backlog_widget, "geometry");
         animation->setDuration(300);
         animation->setStartValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry());
-        animation->setEndValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry().adjusted(0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() - 30,
-                                                                                                             0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() - 30));
+        animation->setEndValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry().adjusted(0, global <main_view>()->m_console_widget->m_backlog_widget->size().height(),
+                                                                                                             0, global <main_view>()->m_console_widget->m_backlog_widget->size().height()));
         animation->setEasingCurve(QEasingCurve::OutBounce);
         animation->start();
 
     } else {
         // widget is hidden; restore visibility
-        m_console_widget->setVisible(true);
         m_console_widget->m_input_widget->setFocus();
         m_console_widget->setPreferredSize(width(), height() / 3);
-        m_console_widget->show();
+        // m_console_widget->setVisible(true);
+        // m_console_widget->show();
         QPropertyAnimation *animation = new QPropertyAnimation(global <main_view>()->m_console_widget->m_backlog_widget, "geometry");
         animation->setDuration(300);
         animation->setStartValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry());
-        animation->setEndValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry().adjusted(0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() + 30,
-                                                                                                             0, global <main_view>()->m_console_widget->m_backlog_widget->size().height() + 30));
+        animation->setEndValue(global <main_view>()->m_console_widget->m_backlog_widget->geometry().adjusted(0, -global <main_view>()->m_console_widget->m_backlog_widget->size().height(),
+                                                                                                             0, -global <main_view>()->m_console_widget->m_backlog_widget->size().height()));
         animation->setEasingCurve(QEasingCurve::OutBounce);
         animation->start();
 
     }
-
+    m_console_widget->is_open = !m_console_widget->is_open;
 }
 
 // Default Window Size

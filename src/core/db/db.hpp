@@ -19,7 +19,7 @@
 #include <QMutex>
 #include <client/dbclient.h>
 #include <client/connpool.h>
-#include <util/goodies.h>
+#include <bson/bson.h>
 
 using namespace mongo;
 using namespace boost;

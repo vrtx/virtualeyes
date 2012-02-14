@@ -52,6 +52,7 @@ namespace veyes
         QGraphicsWidget *m_backlog_proxy;
         QTextEdit *m_backlog_widget;
         QGraphicsGridLayout *m_layout;
+        bool is_open;
 
         // Member Functions
         console_widget(QGraphicsWidget *parent = NULL);
@@ -71,7 +72,6 @@ namespace veyes
         // // Member functions
         // QSize sizeHint() const;                 // default window size
         // QSize minimumSizeHint() const;          // minimum size of window
-
     };
 
 }

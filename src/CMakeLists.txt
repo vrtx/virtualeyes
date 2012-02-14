@@ -105,7 +105,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/opsys
                     ${QT_INCLUDES}
                     ${OPENGL_INCLUDE_DIR}
-					${CMAKE_SOURCE_DIR}/../mongo/src/mongo
+                    ${CMAKE_SOURCE_DIR}/../mongo/src/mongo
 )
 
 # platform-specific executable targets
@@ -129,11 +129,11 @@ ENDIF(UNIX)
 TARGET_LINK_LIBRARIES(virtualeyes
                       ${QT_LIBRARIES}
                       ${OPENGL_LIBRARIES}
-					  -L${CMAKE_SOURCE_DIR}/../mongo/
-					  mongoclient
-					  boost_thread-mt
-					  boost_filesystem-mt
-					  boost_system-mt
+                      -L${CMAKE_SOURCE_DIR}/../mongo/
+                      mongoclient
+                      boost_thread-mt
+                      boost_filesystem-mt
+                      boost_system-mt
                       # -L/opt/local/lib/      # for macports
                       # tcmalloc
                       # profiler
