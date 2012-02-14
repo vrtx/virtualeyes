@@ -156,13 +156,21 @@ void veye_scene::drawBackground(QPainter *painter, const QRectF &)
             // draw edge to parent node
             glColor4f(0.60, 0.55, 0.45, ((float)i_snap->id / global_handle::global_handle_index) );
             glBegin(GL_LINES);
-            glVertex3f(-0.04f + i_snap->id + 20 + depth * 3,  -1.0f + (depth * 4), depth / 4); // origin of the line
-            glVertex3f(0.01f + last_depth_x + depth * 3 - 1,  last_depth_y, (depth - 1) / 4);        // ending point of the line
-            glEnd( );
-
+            glVertex3f(-0.04f + i_snap->id + 20 + depth * 3,  -1.0f + (depth * 4), depth / 4);      // origin of the line
+            glVertex3f(0.01f + last_depth_x + depth * 3 - 1,  last_depth_y, (depth - 1) / 4);       // ending point of the line
+            glEnd();
         }
 
     }
+
+    glColor4f(0.1, 0.2, 0.4, 0.5 );
+    glBegin(GL_QUADS);
+    glVertex3f(-500, 0, -500);
+    glVertex3f(500,  0, -500);
+    glVertex3f(500,  0, 500);
+    glVertex3f(-500, 0, 500);
+    glEnd();
+    
 
     // reset the openGL state for the QPainter
     glPopMatrix();
