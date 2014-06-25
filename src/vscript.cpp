@@ -12,6 +12,7 @@
 #include "common.hpp"
 #include "vscript.hpp"
 #include "virtualeyes.hpp"
+#include "range_map.hpp"
 
 /// @brief  ctor
 vscript::vscript() :
@@ -21,6 +22,9 @@ vscript::vscript() :
         // Create the object bindings
         QScriptValue b_session = core.newQObject(global <virtualeyes>()->m_active_session.raw_ptr);
         core.globalObject().setProperty("session", b_session);
+
+        QScriptValue b_range_map = core.newQObject(global <range_map>().raw_ptr);
+        core.globalObject().setProperty("range_map", b_range_map);
 
 
 //        QScriptValue b_session = core.newQObject(global <virtualeyes>()->m_active_session.raw_ptr);

@@ -28,6 +28,7 @@ SET(SRCS
         memory_region.cpp
         session.cpp
         snapshot.cpp
+        range_map.cpp
         console_widget.cpp
         console_input_widget.cpp
         vscript.cpp
@@ -57,6 +58,7 @@ SET(HDRS
         models/x86_32.hpp
         opsys/win2k8.hpp
         opsys/os_none.hpp
+        range_map.hpp
         breakpoint.hpp
         veye_scene.hpp
         main_window.hpp
@@ -80,6 +82,7 @@ QT4_WRAP_CPP(MOC_SRCS main_window.hpp
                       main_view.hpp
                       veye_scene.hpp
                       session.hpp
+                      range_map.hpp
                       virtualeyes.hpp
                       console_widget.hpp
                       console_input_widget.hpp
@@ -105,7 +108,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/opsys
                     ${QT_INCLUDES}
                     ${OPENGL_INCLUDE_DIR}
-                    ${CMAKE_SOURCE_DIR}/../mongo/src/mongo
+                    ${CMAKE_SOURCE_DIR}/../mongo
 )
 
 # platform-specific executable targets
